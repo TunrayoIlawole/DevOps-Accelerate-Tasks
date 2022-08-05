@@ -1,12 +1,28 @@
 name: DevOps Accelerate Worflow Task
+
 on: [push]
+
 jobs:
-  Explore-GitHub-Actions:
+  Show-OS-Name-And-Other-Details:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: List files in the repository
       - run: ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
+      
+  stale:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/stale@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: 'This issue is stale because it has been open for a day with no activity.'
+          close-issue-message: 'This issue was closed because it has been stalled for 2 days with no activity.'
+          stale-issue-label: 'no-issue-activity'
+          days-before-issue-stale: 1
+          days-before-issue-close: 2
+    
